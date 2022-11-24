@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 from starlette.responses import RedirectResponse
 from loguru import logger
 
@@ -10,7 +11,11 @@ async def read_root():
     return RedirectResponse(url='/docs#')
 
 
-@app.get("/index")
+class IndexResponse(BaseModel):
+    message: str
+
+
+@app.get("/index", response_model=IndexResponse)
 async def index():
     logger.debug("[debug] Index is calling...!")
     logger.info("[info] Index is calling...!")
